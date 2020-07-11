@@ -1,5 +1,5 @@
 const React = require('react');
-const { useState } = React;
+const { useState, useRef, memo } = React;
 const Try = require('./Try');
 
 function getNumbers() {
@@ -8,11 +8,12 @@ function getNumbers() {
   return arr.map((v, i) => candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0]);
 }
 
-const NumberBaseball = () => {
+const NumberBaseball = memo(() => {
   const [result, setResult] = useState('숫자야구');
   const [value, setValue] = useState('');
   const [answer, setAnswer] = useState(getNumbers());
   const [tries, setTries] = useState([]);
+  const inputEl = useRef();
 
  const onChangeInput = (e) => {
    setValue(e.target.value);
@@ -27,6 +28,7 @@ const NumberBaseball = () => {
       setValue('');
       setAnswer(getNumbers());
       setTries([]);
+      inputEl.current.focus();
     } else { // 오답
       const answerArray = value.split('').map(v => parseInt(v));
       let strike = 0;
@@ -37,6 +39,7 @@ const NumberBaseball = () => {
         setValue('');
         setAnswer(getNumbers());
         setTries([]);
+        inputEl.current.focus();
       } else { // 다시 기회
         answer.forEach((answer, i) => {
           if (answerArray[i] === answer) {
@@ -47,6 +50,7 @@ const NumberBaseball = () => {
         })
         setValue('');
         setTries((prev) => [...prev, {try: value, result : ` : ${strike} 스트라이크, ${ball} 볼입니다.`}])
+        inputEl.current.focus();
       }
     }
   }
@@ -55,7 +59,7 @@ const NumberBaseball = () => {
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
-        <input maxLength={4} value={value} onChange={onChangeInput}/>
+        <input ref={inputEl} maxLength={4} value={value} onChange={onChangeInput}/>
         <button type='submit'>시도</button>
       </form>
       <div>시도 : {tries.length}</div>
@@ -64,6 +68,6 @@ const NumberBaseball = () => {
       </ul>
     </>
   )
-}
+})
 
 module.exports = NumberBaseball;

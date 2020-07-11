@@ -1,5 +1,5 @@
 const React = require('react');
-const {Component} = React;
+const {PureComponent, createRef} = React;
 const Try = require('./Try');
 
 function getNumbers() {
@@ -8,7 +8,7 @@ function getNumbers() {
   return arr.map((v, i) => candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0]);
 }
 
-class NumberBaseball extends Component {
+class NumberBaseball extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +25,7 @@ class NumberBaseball extends Component {
       value: e.target.value
     })
   }
+  inputRef = createRef();
 
   onSubmitForm = (e) => {
     e.preventDefault();
@@ -39,6 +40,7 @@ class NumberBaseball extends Component {
         answer: getNumbers(),
         tries: []
       })
+      this.inputRef.current.focus();
     } else { // 오답
       const answerArray = this.state.value.split('').map(v => parseInt(v));
       let strike = 0;
@@ -54,6 +56,7 @@ class NumberBaseball extends Component {
           answer: getNumbers(),
           tries: []
         })
+        this.inputRef.current.focus();
       } else { // 다시 기회
         this.state.answer.forEach((answer, i) => {
           if (answerArray[i] === answer) {
@@ -64,8 +67,9 @@ class NumberBaseball extends Component {
         })
         this.setState({
           value: '',
-          tries: [...this.state.tries, {try: this.state.value, result : ` : ${strike} 스트라이크, ${ball} 볼입니다.`}]
+          tries: [...this.state.tries, {try: this.state.value, result: ` : ${strike} 스트라이크, ${ball} 볼입니다.`}]
         })
+        this.inputRef.current.focus();
       }
     }
   }
@@ -76,12 +80,12 @@ class NumberBaseball extends Component {
       <>
         <h1>{this.state.result}</h1>
         <form onSubmit={this.onSubmitForm}>
-          <input maxLength={4} value={this.state.value} onChange={this.onChangeInput}/>
+          <input ref={this.inputRef} maxLength={4} value={this.state.value} onChange={this.onChangeInput}/>
           <button type='submit'>시도</button>
         </form>
         <div>시도 : {this.state.tries.length}</div>
         <ul>
-          {this.state.tries.map((v, i) => < Try key={i} tryInfo={v} />)}
+          {this.state.tries.map((v, i) => < Try key={i} tryInfo={v}/>)}
         </ul>
       </>
     )
