@@ -11,6 +11,12 @@ class ResponseCheck extends Component {
   startTime;
   endTime;
 
+  onReset = () => {
+    this.setState({
+      result: []
+    })
+  }
+
   onClickScreen = () => {
     const {state, message, result} = this.state;
     if (state === 'waiting') { // 파랑일 때 클릭한 거면
@@ -44,8 +50,10 @@ class ResponseCheck extends Component {
   }
   renderAverage = () => {
     const {result} = this.state;
-    return result.length ? <div className="text">Response Time : {Math.round(result.reduce((a, c) => (a + c) / result.length))}ms</div> : null
-
+    return result.length
+        ? <div className="bottom"><div className="text">Response Time : {Math.round(result.reduce((a, c) => (a + c) / result.length))}ms</div>
+          <button onClick={this.onReset}>Reset</button></div>
+        : null
   }
 
   render() {

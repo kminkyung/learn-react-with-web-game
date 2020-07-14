@@ -3,6 +3,7 @@ const { useState, useRef, memo } = React;
 const Try = require('./Try');
 
 function getNumbers() {
+  console.log("getNumbers");
   const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const arr = [...Array(4)];
   return arr.map((v, i) => candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0]);

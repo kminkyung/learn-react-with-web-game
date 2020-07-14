@@ -25,7 +25,7 @@ class NumberBaseball extends PureComponent {
       value: e.target.value
     })
   }
-  inputRef = createRef();
+  inputRef = createRef(); // this.inputRef 생성
 
   onSubmitForm = (e) => {
     e.preventDefault();
