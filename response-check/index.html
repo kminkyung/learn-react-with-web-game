@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    #screen {
+      width: 300px;
+      height: 200px;
+      text-align: center;
+      user-select: none;
+      color: lightgreen;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #screen.waiting {
+      background-color: cornflowerblue;
+    }
+    #screen.ready {
+      background-color: palevioletred;
+      color: oldlace;
+    }
+    #screen.now {
+      background-color: aquamarine;
+    }
+    .text {
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script src="./dist/app.js"></script>
+</body>
+</html>
