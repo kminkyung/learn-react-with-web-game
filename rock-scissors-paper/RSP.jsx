@@ -54,13 +54,12 @@ class RSP extends PureComponent {
     clearInterval(this.interval);
   }
 
-  onClickBtn = (choice) => {
+  onClickBtn = (choice) => () => {
     const {imgCoord} = this.state
     clearInterval(this.interval);
     const myScore = scores[choice];
     const cpuScore = scores[computerChoice(imgCoord)];
     const diff = myScore - cpuScore;
-    console.log("myScore: ", myScore, "cpuScore :", cpuScore, "diff :", diff);
     if (diff === 0) {
       this.setState({
         result: 'Draw',
@@ -80,7 +79,7 @@ class RSP extends PureComponent {
         }
       })
     }
-    setTimeout(() => this.interval = setInterval(this.changeHand, 1000), 2000);
+    setTimeout(() => this.interval = setInterval(this.changeHand, 100), 1000);
   }
 
   render() {
@@ -89,9 +88,9 @@ class RSP extends PureComponent {
       <>
         <div id="computer" style={{ background: `url(rock-scissors-paper.jpg) ${imgCoord} 0` }}/>
         <div>
-          <button id="rock" className="btn" onClick={() => this.onClickBtn('rock')}>Rock</button>
-          <button id="scissors" className="btn" onClick={() => this.onClickBtn('scissors')}>Scissors</button>
-          <button id="paper" className="btn" onClick={() => this.onClickBtn('paper')}>Paper</button>
+          <button id="rock" className="btn" onClick={this.onClickBtn('rock')}>Rock</button>
+          <button id="scissors" className="btn" onClick={this.onClickBtn('scissors')}>Scissors</button>
+          <button id="paper" className="btn" onClick={this.onClickBtn('paper')}>Paper</button>
         </div>
         <div className="result">{result}</div>
         <div>Score : {score}</div>
