@@ -1,17 +1,20 @@
 const React = require('react');
 const {useCallback} = React;
-import {CLICK_CELL} from "./TicTacToe";
+const {CLICK_CELL, CHANGE_TURN} = require('./TicTacToe');
 
-const Td = ({rowIndex, cellIndex}) => {
+
+const Td = ({rowIndex, cellIndex, dispatch, cellData}) => {
+
   const onClickTd = useCallback(() => {
     console.log(rowIndex, cellIndex);
+    if(cellData) return;
     dispatch({type: CLICK_CELL, row: rowIndex, cell: cellIndex});
-  }, [])
+    dispatch({type: CHANGE_TURN});
+  }, [cellData])
 
   return (
-      <Td onClick={onClickTd}>{''}</Td>
+      <td onClick={onClickTd}>{cellData}</td>
   )
-
 }
 
 

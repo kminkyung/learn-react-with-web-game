@@ -1,5 +1,5 @@
 const React = require('react');
-const {useState, useEffect, useRef, memo} = React;
+const {useState, useEffect, useRef, useMemo} = React;
 const Ball = require('./Ball');
 
 const getWinNumbers = () => {
@@ -15,8 +15,9 @@ const getWinNumbers = () => {
   return [...winNumbers, bonusNumber];
 }
 
-const Lotto = memo(() => {
-  const [winNumbers, setWinNumbers] = useState(getWinNumbers());
+const Lotto = () => {
+  const lottoNumbers = useMemo(() => getWinNumbers(), []); // []인자가 바뀌지 않는 이상, 다시 실행되지 않음
+  const [winNumbers, setWinNumbers] = useState(lottoNumbers);
   const [winBalls, setWinBalls] = useState([]);
   const [bonus, setBonus] = useState(null);
   const [redo, setRedo] = useState(false);
@@ -64,7 +65,7 @@ const Lotto = memo(() => {
       {redo && <button onClick={onClickRedo}>Try Again</button>}
     </>
   )
-})
+}
 
 
 module.exports = Lotto;
