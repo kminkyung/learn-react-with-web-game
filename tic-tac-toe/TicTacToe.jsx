@@ -14,7 +14,7 @@ const initialState = {
 
 export const SET_WINNER = 'SET_WINNER';
 export const CLICK_CELL = 'CLICK_CELL';
-export const CHANGE_TURN = 'SET_TURN';
+export const CHANGE_TURN = 'CHANGE_TURN';
 export const RESET_GAME = 'RESET_GAME';
 
 
@@ -26,7 +26,7 @@ const reducer = (state, action) => { // action을 dispatch할 때마다 reducer�
         ...state,
         winner: action.winner,
       } // 새로운 state를 만들어서 바뀌는 부분만 바뀌는 것 <- 불변성
-    case CLICK_CELL:
+    case CLICK_CELL: {
       const tableData = [...state.tableData];
       tableData[action.row] = [...tableData[action.row]];
       tableData[action.row][action.cell] = state.turn;
@@ -35,12 +35,14 @@ const reducer = (state, action) => { // action을 dispatch할 때마다 reducer�
         tableData,
         recentCell: [action.row, action.cell],
       }
-    case CHANGE_TURN:
+    }
+    case CHANGE_TURN: {
       return {
         ...state,
         turn: state.turn === 'O' ? 'X' : 'O'
       }
-    case RESET_GAME:
+    }
+    case RESET_GAME: {
       return {
         ...state,
         turn: 'O',
@@ -51,6 +53,7 @@ const reducer = (state, action) => { // action을 dispatch할 때마다 reducer�
         ],
         recentCell: [-1, -1]
       }
+    }
     default:
       return state;
   }
@@ -69,7 +72,9 @@ const TicTacToe = () => {
 
   useEffect(() => {
     const [row, cell] = recentCell;
-    if(row < 0) return;
+    if(row < 0) {
+      return;
+    }
 
     let win = false;
     if(tableData[row][0] === turn && tableData[row][1] === turn && tableData[row][2] === turn) {
@@ -92,7 +97,7 @@ const TicTacToe = () => {
       tableData.forEach((row) => { // 무승부 검사
         row.forEach((cell) => {
           if(!cell) {
-            all = true;
+            all = false;
           }
         });
       });
@@ -102,7 +107,6 @@ const TicTacToe = () => {
         dispatch({type: CHANGE_TURN});
       }
     }
-
   }, [recentCell]);
 
   return (
